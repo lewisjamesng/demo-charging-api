@@ -59,15 +59,17 @@ jobs:
         id: npm_audit
         continue-on-error: true
         run: |
-          npm audit --omit=dev --json > npm-audit-report.json
-          npm audit --omit=dev
+          npm audit --omit=dev --json > npm-audit-report.json || true
+          npm audit --omit=dev | tee npm-audit.txt
+          exit "${PIPESTATUS[0]}"
       - name: osv-scanner
         id: osv
         continue-on-error: true
         run: |
-          osv-scanner scan source -r . --format sarif --output osv-scanner.sarif || true
-          osv-scanner scan source -r . --format json --output osv-scanner-report.json || true
+          osv-scanner scan source -r . --format sarif --output-file osv-scanner.sarif || true
+          osv-scanner scan source -r . --format json --output-file osv-scanner-report.json || true
           osv-scanner scan source -r . | tee osv-scanner.txt
+          exit "${PIPESTATUS[0]}"
       - name: Flag findings
         if: always()
         run: |
@@ -87,6 +89,7 @@ jobs:
           name: security-scan-reports
           path: |
             npm-audit-report.json
+            npm-audit.txt
             osv-scanner-report.json
             osv-scanner.sarif
             osv-scanner.txt
