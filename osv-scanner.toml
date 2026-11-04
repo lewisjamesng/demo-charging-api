@@ -1,0 +1,19 @@
+# Dev-only test tooling pulled in by Jest. Not shipped at runtime, so it is
+# excluded from the demo scan. Runtime dependencies are never ignored here.
+[[PackageOverrides]]
+name = "deepmerge"
+ecosystem = "npm"
+vulnerability.ignore = true
+reason = "dev-only (jest transitive), not in runtime bundle"
+
+[[PackageOverrides]]
+name = "glob"
+ecosystem = "npm"
+vulnerability.ignore = true
+reason = "dev-only (jest transitive), not in runtime bundle"
+
+[[PackageOverrides]]
+name = "minimatch"
+ecosystem = "npm"
+vulnerability.ignore = true
+reason = "dev-only (jest transitive), not in runtime bundle"
